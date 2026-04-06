@@ -1,8 +1,10 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
-const isDev = require('electron-is-dev');
 const path = require('path');
 const { autoUpdater } = require('electron-updater');
 const Store = require('electron-store');
+
+// Detectar modo de desenvolvimento de forma simples
+const isDev = process.env.NODE_ENV === 'development' || process.argv.includes('--dev');
 
 // Inicializar store para dados locais
 const store = new Store();
@@ -159,11 +161,6 @@ app.on('activate', () => {
     mainWindow.show();
   }
 });
-
-// Handle squirrel events (Windows installer)
-if (require('electron-squirrel-startup')) {
-  app.quit();
-}
 
 // Auto-update events
 autoUpdater.on('update-available', () => {
